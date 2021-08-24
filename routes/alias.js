@@ -396,9 +396,17 @@ router.get('/:alias', async function(req, res) {
 	});
 });
 
+router.use('/:username', function(req, res, next) {
+	Alias.findOne({ username: req.params.username.toLowerCase() }, function(err, user) {
+		if (err) return res.status(500).json({ 'error': err });
+		if (!user) return res.status(404).json({ error: 'Player not found.' });
+		req.user = user;
+		next();
+	});
+});
+
 router.put('/:username/rank', async function(req, res) {
-	var alias = await Alias.findOne({ username: req.params.username.toLowerCase() });
-	if (!alias) return res.status(404).json({ error: 'Player not found.' });
+	var alias = req.user;
 	alias.rank =  req.body.rank;
 	await alias.save();
 	res.send();
@@ -408,8 +416,7 @@ router.put('/:username/status', async function(req, res) {
 	if (!req.params.username) return res.status(404).json({ error: 'Player not found.' });
 	else if (!req.body.status) return res.status(400).json({ error: 'Invalid status.' });
 	else if (req.body.status.length > 300) return res.status(400).json({ error: 'Maximum status length: 300' });
-	var user = await Alias.findOne({ username: req.params.username.toLowerCase() });
-	if (!user) return res.status(404).json({ error: 'Player not found.' });
+	var user = req.user;
 	user.status = req.body.status;
 	await user.save();
 	res.send();
@@ -469,15 +476,6 @@ router.post('/:owner/give', async function(req, res) {
 	await owner.save();
 	await user.save();
 	return res.status(200).send({ amount: owner.gold });
-});
-
-router.use('/:username', function(req, res, next) {
-	Alias.findOne({ username: req.params.username.toLowerCase() }, function(err, user) {
-		if (err) return res.status(500).json({ 'error': err });
-		if (!user) return res.status(404).json({ error: 'Player not found.' });
-		req.user = user;
-		next();
-	});
 });
 
 router.put('/:username/affiliation/:affiliation', async function(req, res) {

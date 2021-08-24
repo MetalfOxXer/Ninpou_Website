@@ -43,6 +43,7 @@ app.use('/items', require('./routes/items'));
 app.use('/heroes', require('./routes/heroes'));  
 app.use('/trivias', require('./routes/trivias'));  
 app.use('/villages', require('./routes/villages'));  
+app.use('/triggers', require('./routes/triggers'));  
 
 app.get('/latest', function(req, res) {
 	res.redirect(version.download_link);

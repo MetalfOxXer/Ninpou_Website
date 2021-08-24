@@ -288,7 +288,7 @@ bot.on('message', async function(ev) {
 				'< !hero > <name>                  : Display meta information about specific hero\n' + 
 				'< !events >                       : Display all hosted events\n' +
 				'< !event > <name>                 : Display ranking of a particular event\n' +
-				'< !title > <title>                : Set in-game title\n' + 
+				'< !title > <title>                : Set in-game title (cost: 1kk gold)\n' + 
 				//'< !tips > <hero_name>           : Show all tips related to a hero\n' +
 				//'< !tip > <hero_name> <tip>      : Create a tip for a hero and get gold proportional to your rank (<25/50/100/200/400/800> x lvl)!\n' +
 				//'< !subscribe >                  : Turn on/off Tonton private alert messages\n' +
@@ -454,17 +454,11 @@ bot.on('message', async function(ev) {
 				}
 			});
 		} else if (cmd == 'addalias') {
-			getAliasOf(ev.author.id, function(err, alias) {
-				//if (alias.length > 0) {
-				//	ev.channel.send('You can only have one alias per account now. If you want to add another alias, ask an admin! **Oink!!**');
-				//} else {
-					if (args.length > 0) {
-						addAlias(ev, encodeURIComponent(args[0]));
-					} else {
-						ev.channel.send('Me no understand! Type **!addalias <account>**, replacing **<account>** by your Warcraft 3 account.');
-					} 
-				//}
-			});
+			if (args.length > 0) {
+				addAlias(ev, encodeURIComponent(args[0]));
+			} else {
+				ev.channel.send('Me no understand! Type **!addalias <account>**, replacing **<account>** by your Warcraft 3 account.');
+			} 
 		} else {
 			getAliasOf(ev.author.id, async function(err, alias) {
 				if (err) {
