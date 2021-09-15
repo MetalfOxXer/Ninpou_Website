@@ -1,0 +1,36 @@
+{
+  "name": "narutoninpou",
+  "version": "1.0.0",
+  "description": "A three-sided MOBA themed in Naruto Universe",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "naruto",
+    "ninpou",
+    "dota",
+    "wc3"
+  ],
+  "author": "PicoleDeLimao",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "discord.js": "12.3.1",
+    "express": "^4.15.2",
+    "i": "^0.3.6",
+    "jimp": "^0.16.1",
+    "js-regression": "^1.0.10",
+    "jsonwebtoken": "^7.3.0",
+    "ml-random-forest": "github:jondwillis/random-forest",
+    "moment": "^2.21.0",
+    "moment-timezone": "^0.5.21",
+    "mongoose": "^5.11.8",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
+    "passport-steam": "^1.0.10",
+    "wokcommands": "^1.3.6"
+  }
+}
