@@ -1,0 +1,49 @@
+<div id="forum">
+	<span layout="row">
+		<a href ui-sref="root.forum.new"><md-button><i class="fa fa-star"></i> View new replies</a></md-button>
+	</span>
+	<section ng-repeat="category in categories">
+		<h3 layout="row" layout-align="right center">
+			<img ng-src="{{ category.icon }}" aria-label="{{ category.name }}" /> 
+			{{ category.name }}
+		</h3>
+		<article layout="row" ng-repeat="section in category.sections">
+			<div flex="5" flex-xs="0" layout="column" layout-align="center center">
+				<img ng-src="{{ sectionData[section].icon }}" aria-label="{{ sectionData[section].title }}" />
+			</div>
+			<div class="description" flex="35" flex-xs="60">
+				<a href ui-sref="{{ sectionData[section].url }}"><h4>{{ sectionData[section].title }}</h4></a>
+				<p>{{ sectionData[section].description }}</p>
+			</div>
+			<div class="stats" flex="20" hide-xs style="text-align: right;">
+				<p>{{ getData(sectionData[section].name).numThreads || 0 | number }} threads</p>
+				<p>{{ getData(sectionData[section].name).numReplies || 0 | number }} replies</p>
+			</div>
+			<div class="latest" flex="40" ng-if="getData(sectionData[section].name).lastThread">
+				<a href ui-sref="root.forum.threads({ id: getData(sectionData[section].name).lastThread._id })"><p>{{ getData(sectionData[section].name).lastThread.title }}</p></a>
+				<p>
+					<i class="fa fa-clock-o"></i> <time ng-bind="timeAgo(getLastUpdate(sectionData[section].name).date)"></time> by
+					<a href ui-sref="root.profile({ id: getLastUpdate(sectionData[section].name).user._id })">{{ getLastUpdate(sectionData[section].name).user.displayName }}</a> 
+				</p>
+			</div>
+		</article>
+	</section>
+	<section hide-xs>
+		<h3 class="md-subhead"><b><i class="fa fa-line-chart"></i> FORUM STATISTICS</b></h3>
+		<article layout-padding layout="row">
+			<span flex="25"><i class="fa fa-stack-exchange"></i> Threads: {{ stats.numThreads | number }}</span>
+			<span flex="25"><i class="fa fa-comments"></i> Replies: {{ stats.numReplies | number }}</span>
+			<span flex="25"><i class="fa fa-users"></i> Users: {{ stats.numUsers | number }}</span>
+			<span flex="25">Last registered user: <a href ui-sref="root.profile({ id: stats.lastUser._id })">{{ stats.lastUser.displayName }}</a></span>
+		</article>
+		<article>
+			<p>Users active in the past 15 minutes:</p>
+			<div layout-padding>
+				<span ng-repeat="user in stats.lastLoggedInUsers" style="margin-right: 10px;">
+					<a href ui-sref="root.profile({ id: user._id })">{{ user.displayName }}</a>
+				</span>
+			</div>
+		</article>
+		
+	</section>
+</div>

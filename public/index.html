@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="en_US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="A three-sided MOBA based in Naruto Universe.">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Naruto Ninpou</title>
+		
+		<!-- Favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+		
+		<!-- Angular Material style sheet -->
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+		<!-- Awesome fonts -->
+		<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<!-- Country flags -->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css" />
+		
+		<link rel="stylesheet" href="assets/css/default.css">
+		
+		<!-- Angular Material requires Angular.js Libraries -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+		
+		<!-- Angular Material Library -->
+		<script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+		
+		<!-- UI-Router -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+		
+		<!-- MomentJS -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.1/angular-moment.min.js"></script>
+		
+		<!-- BBCode Parser -->
+		<script src="assets/libs/angularjs-bbcode.js"></script>
+		
+		<!-- App module and controllers -->
+		<script src="app/app.module.js"></script>
+		<script src="app/shared/services/mongo-service.js"></script>
+		<script src="app/shared/services/section-data.js"></script>
+		<script src="app/shared/directives/show-more.js"></script>
+		<script src="app/shared/directives/bbcode-buttons.js"></script>
+		<script src="app/components/root/controller.js"></script>
+		<script src="app/components/home/controller.js"></script>
+		<script src="app/components/blog/controller.js"></script>
+		<script src="app/components/profile/controller.js"></script>
+		<script src="app/components/profile/info/controller.js"></script>
+		<script src="app/components/profile/threads/controller.js"></script>
+		<script src="app/components/heroes/controller.js"></script>
+		<script src="app/components/items/controller.js"></script>
+		<script src="app/components/games/controller.js"></script>
+		<script src="app/components/stats/controller.js"></script>
+		<script src="app/components/forum/root/controller.js"></script>
+		<script src="app/components/forum/home/controller.js"></script>
+		<script src="app/components/forum/sections/controller.js"></script>
+		<script src="app/components/forum/threads/controller.js"></script>
+		<script src="app/components/forum/new/controller.js"></script>
+		<script src="app/app.routes.js"></script>
+	</head>
+	<body ng-app="Ninpou" ng-cloak>
+		<ui-view></ui-view>
+	</body>
+</html>

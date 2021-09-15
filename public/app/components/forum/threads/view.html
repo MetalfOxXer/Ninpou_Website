@@ -1,0 +1,107 @@
+<h3>{{ thread.title }}</h3>
+<p>Posted on <a href ui-sref="root.forum.home">Forum</a> / <a href ui-sref="root.forum.sections({ section: thread.section.name })">{{ sectionData[thread.section.name].title }}</a></p>
+
+<div class="reply" layout="row">
+	<div class="profile arrow" layout="column" flex-lg="10" flex-gt="10" flex-md="15" flex-sm="20" flex-xs="30">
+		<div class="avatar">
+			<md-tooltip md-direction="right">
+				<p layout="row">Threads: <span flex></span>{{ thread.createdBy.numThreads || 0 | number}}</p>
+				<p layout="row">Replies: <span flex></span>{{ thread.createdBy.numReplies || 0 | number}}</p>
+				<p layout="row" ng-if="thread.createdBy.countryCode">Country: <span flex></span><span class="flag-icon flag-icon-{{ thread.createdBy.countryCode.toLowerCase() }} flag-icon-squared"></span></p>
+				<p layout="row">Online: <span ng-if="isOnline(thread.createdBy)" style="color: green;"><i class="fa fa-circle"></i></span><span ng-if="!isOnline(thread.createdBy)"><i class="fa fa-circle-o"></i></span></p>
+			</md-tooltip>
+			<img ng-src="{{ thread.createdBy.profilePhoto }}" ng-alt="{{ thread.createdBy.displayName }}" />
+		</div>
+		<a href ui-sref="root.profile({ id: thread.createdBy._id })"><h5>{{ thread.createdBy.displayName }}</h5></a>
+	</div>
+	<div class="body" layout="column" flex-lg="90" flex-gt="90" flex-md="85" flex-sm="80" flex-xs="70" >
+		<div ng-if="!ctrl.editThread"><p ks-nl2br ks-bbcode>{{ thread.contents }}</p></div>
+		<span ng-show="!ctrl.editThread" flex></span>
+		<p ng-show="!ctrl.editThread" class="md-caption" style="text-align: right;">
+			<i class="fa fa-clock-o"></i> <time ng-bind="timeAgo(thread._id)"></time><br/>
+			<i ng-if="thread.lastEdit">Last edit: <time ng-bind="timeAgoDate(thread.lastEdit)"></time></i>
+		</p>
+		<div ng-if="ctrl.editThread">
+			<br/>
+			<md-input-container class="md-block">
+				<label>Title</label>
+				<input type="text" ng-model="ctrl.threadTitle" ng-init="ctrl.threadTitle=thread.title" required ng-minlength="3" md-maxlength="70">
+			</md-input-container>
+			<bbcode-buttons element-id="thread-text-area" model-name="ctrl.threadContents"></bbcode-buttons>
+			<md-input-container class="md-block">
+				<label>Contents</label>
+				<textarea rows="3" ng-model="ctrl.threadContents" ng-init="ctrl.threadContents=thread.contents" id="thread-text-area" required md-maxlength="10000"></textarea>
+			</md-input-container>
+		</div>
+		<div layout="row" class="pages" ng-if="thread.createdBy._id == user._id || (user && user.isAdmin)" style="margin-bottom: 10px;">
+			<span flex></span>
+			<md-button class="md-primary md-raised" aria-label="Confirm" ng-click="saveThread()" ng-show="ctrl.editThread"><i class="fa fa-check"></i></md-button>
+			<md-button class="md-primary md-raised" aria-label="Edit" ng-click="ctrl.editThread=true" ng-show="!ctrl.editThread"><i class="fa fa-edit"></i></md-button> 
+			<span style="margin-right: 5px;"></span>
+			<md-button class="md-primary md-raised" aria-label="Cancel" ng-click="ctrl.editThread=false" ng-show="ctrl.editThread"><i class="fa fa-ban"></i></md-button>
+			<md-button class="md-primary md-raised" aria-label="Remove" ng-click="removeThread()" ng-show="!ctrl.editThread"><i class="fa fa-remove"></i></md-button>
+		</div>
+	</div>
+</div>
+
+<div layout="row" ng-if="user">
+	<div class="reply-box reply-box-arrow" flex>
+		<bbcode-buttons element-id="reply-text-area" model-name="ctrl.replyContents"></bbcode-buttons>
+		<form ng-submit="sendReply('reply-text-area')">
+			<md-input-container class="md-block">
+				<label>Reply</label>
+				<textarea rows="3" ng-model="ctrl.replyContents" id="reply-text-area" required autofocus md-maxlength="5000"></textarea>
+				<md-button type="submit" class="md-primary md-raised"><i class="fa fa-send"></i> Send reply</md-button>
+			</md-input-container>
+		</form>
+	</div>
+</div>
+
+<div id="reply-start"></div>
+
+<p><span class="pages">
+	<md-button ng-repeat="page in pages" ng-class="{ 'active': page == currentPage }" ng-disabled="page == currentPage" ng-click="loadReplies(page)">{{ page }}</md-button>
+</span></p>
+
+<div class="reply" layout="row" ng-repeat="reply in replies" ng-init="ctrl.editReplies = { }">
+	<div class="profile arrow" layout="column" flex-lg="10" flex-gt="10" flex-md="15" flex-sm="20" flex-xs="30">
+		<div class="avatar">
+			<md-tooltip md-direction="right">
+				<p layout="row">Threads: <span flex></span>{{ reply.createdBy.numThreads || 0 | number}}</p>
+				<p layout="row">Replies: <span flex></span>{{ reply.createdBy.numReplies || 0 | number}}</p>
+				<p layout="row" ng-if="reply.createdBy.countryCode">Country: <span flex></span><span class="flag-icon flag-icon-{{ reply.createdBy.countryCode.toLowerCase() }} flag-icon-squared"></span></p>
+				<p layout="row">Online: <span ng-if="isOnline(reply.createdBy)" style="color: green;"><i class="fa fa-circle"></i></span><span ng-if="!isOnline(reply.createdBy)"><i class="fa fa-circle-o"></i></span></p>
+			</md-tooltip>
+			<img ng-src="{{ reply.createdBy.profilePhoto }}" ng-alt="{{ reply.createdBy.displayName }}" />
+		</div>
+		<a href ui-sref="root.profile({ id: reply.createdBy._id })"><h5>{{ reply.createdBy.displayName }}</h5></a>
+	</div>
+	<div class="body" layout="column" flex-lg="90" flex-gt="90" flex-md="85" flex-sm="80" flex-xs="70">
+		<div ng-if="!ctrl.editReplies[reply._id]"><p ks-nl2br ks-bbcode>{{ reply.contents }}</p></div>
+		<span ng-show="!ctrl.editReplies[reply._id]" flex></span>
+		<p ng-show="!ctrl.editReplies[reply._id]" class="md-caption" style="text-align: right;">
+			<i class="fa fa-clock-o"></i> <time ng-bind="timeAgo(reply._id)"></time><br/>
+			<i ng-if="reply.lastEdit">Last edit: <time ng-bind="timeAgoDate(reply.lastEdit)"></time></i>
+		</p>
+		<div ng-if="ctrl.editReplies[reply._id]">
+			<br/>
+			<bbcode-buttons element-id="reply-text-area-{{ reply._id }}" model-name="ctrl[reply._id]"></bbcode-buttons>
+			<md-input-container class="md-block">
+				<label>Contents</label>
+				<textarea rows="3" ng-model="ctrl[reply._id]" ng-init="ctrl[reply._id]=reply.contents" id="reply-text-area-{{ reply._id }}" required md-maxlength="5000"></textarea>
+			</md-input-container>
+		</div>
+		<div layout="row" class="pages" ng-if="reply.createdBy._id == user._id || (user && user.isAdmin)" style="margin-bottom: 10px;">
+			<span flex></span>
+			<md-button class="md-primary md-raised" aria-label="Confirm" ng-click="saveReply(reply)" ng-show="ctrl.editReplies[reply._id]"><i class="fa fa-check"></i></md-button>
+			<md-button class="md-primary md-raised" aria-label="Edit" ng-click="ctrl.editReplies[reply._id]=true" ng-show="!ctrl.editReplies[reply._id]"><i class="fa fa-edit"></i></md-button> 
+			<span style="margin-right: 5px;"></span>
+			<md-button class="md-primary md-raised" aria-label="Cancel" ng-click="ctrl.editReplies[reply._id]=false" ng-show="ctrl.editReplies[reply._id]"><i class="fa fa-ban"></i></md-button>
+			<md-button class="md-primary md-raised" aria-label="Remove" ng-click="removeReply(reply)" ng-show="!ctrl.editReplies[reply._id]"><i class="fa fa-remove"></i></md-button>
+		</div>
+	</div>
+</div>
+
+<p><span class="pages">
+	<md-button ng-repeat="page in pages" ng-class="{ 'active': page == currentPage }" ng-disabled="page == currentPage" ng-click="loadReplies(page)">{{ page }}</md-button>
+</span></p>
